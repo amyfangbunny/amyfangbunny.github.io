@@ -1,0 +1,35 @@
+* {
+    font-size: 100%;
+    font-family: cursive;
+}
+
+.answer td {
+    border:1px solid rgb(8, 234, 255);
+    padding:15px;
+
+}
+
+.keyboard td {
+    border:1px solid rgb(182, 177, 177);
+    background-color:rgb(178, 172, 172);
+    padding:5px;
+    cursor:pointer;
+}
+
+.center {
+    margin: auto;
+}
+
+.center_text {
+    text-align: center;
+}
+
+.grey {
+    background-color: rgb(100, 95, 95);
+}
+.yellow {
+    background-color: rgb(247, 204, 97);
+}
+.green {
+    background-color: rgb(82, 250, 82);
+}

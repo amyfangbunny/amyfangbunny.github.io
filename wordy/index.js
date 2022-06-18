@@ -32,6 +32,12 @@ var words = [
     "chair",
     "claim",
     "clock",
+    "drive",
+    "doing",
+    "freed",
+    "front",
+    "green",
+    "grand",
 ];
 
 // get a random index

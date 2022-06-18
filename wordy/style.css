@@ -25,11 +25,11 @@
 }
 
 .grey {
-    background-color: rgb(100, 95, 95);
+    background-color: rgb(100, 95, 95) !important;
 }
 .yellow {
-    background-color: rgb(246, 238, 7);
+    background-color: rgb(246, 238, 7) !important;
 }
 .green {
-    background-color: rgb(14, 221, 14);
+    background-color: rgb(14, 221, 14) !important;
 }

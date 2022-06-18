@@ -111,6 +111,7 @@ function check(row) {
             row.cells[i].className="green";
             match[i]="Y"
             word2[i]="-";
+            highlightKeyboard(input[i], "green")
         }
     }
     // check for yellow conditions
@@ -118,10 +119,14 @@ function check(row) {
     for(var i=0;i<colMax;i++) {
         if (match[i]=="Y") continue;
         var j=word2.indexOf(input[i]);
-        if (j<0) row.cells[i].className="grey";
+        if (j<0) {
+            row.cells[i].className="grey";
+            highlightKeyboard(input[i], "grey")
+        }
         else {
             row.cells[i].className="yellow";
             word2[j]="-";
+            highlightKeyboard(input[i], "yellow")
         }
     }
 
@@ -132,4 +137,20 @@ function check(row) {
     }
 
  
+}
+
+function highlightKeyboard(letter, color) {
+    ['kb1','kb2','kb3'].forEach(function(kbid){
+        var kb = document.getElementById(kbid);
+        var cells = kb.rows[0].cells;
+        for (var i=0;i<cells.length;i++) {
+            var td = cells[i];
+            if (td.innerHTML==letter) {
+                //td.className=color;
+                if (!td.className || td.className=='grey') td.className = color;
+                else if (td.className=='yellow' && color=='green') td.className = color;
+                return;
+            }
+        }
+    })
 }

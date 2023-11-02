@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LegoPet</title>
+    <style>
+	* {font-size:100%; font-family:Arial,Helvetica,sans-serif;}
+        .center {margin:auto; display:block;}
+        .center_text {text-align:center;}
+        .btn {width:60px; height:40px; background-color:gray; color:white}
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+    <script>
+    function start() {if (annyang) annyang.resume();requestWakeLock();log('started');document.getElementById('status').innerHTML='Running &#x1F534;';fullscreen('on')}
+    function pause() {if (annyang) annyang.pause(); releaseWakeLock();log('paused'); document.getElementById('status').innerHTML='Paused'}
+    function stop()  {if (annyang) annyang.abort(); releaseWakeLock();log('stopped');document.getElementById('status').innerHTML='Stopped'}
+    function log(msg) {
+      var textarea = document.getElementById('msg');
+      textarea.value += msg+'\n';
+      textarea.scrollTop = textarea.scrollHeight;
+    }
+    function fullscreen(action) {
+      if (document.fullscreenElement) {
+        if (action!='on')
+          document.exitFullscreen();
+      }
+      else if (action!='off') {
+        document.body.requestFullscreen();
+      }
+    }
+    let wakeLock = null;
+    const requestWakeLock = async () => {
+      try {
+	wakeLock = await navigator.wakeLock.request('screen');
+	wakeLock.addEventListener('release', () => {
+	  log('Wake Lock released');
+	});
+	log('Wake Lock is active');
+      } catch (err) {
+	console.error(`${err.name}, ${err.message}`);
+      }
+    };
+    const releaseWakeLock = async () => {
+      if (!wakeLock) {
+	return;
+      }
+      try {
+	await wakeLock.release();
+	wakeLock = null;
+      } catch (err) {
+	console.error(`${err.name}, ${err.message}`);
+      }
+    };
+
+    var CMD = {
+      'hello':                  '#AE3C23',
+      'bye-bye':                '#AABBCC',
+      'come here':              '#0a25f5',
+      'show me your trick':     '#0af51a',
+      "what's your name":       '#f5e50a',
+    }
+
+
+    if (annyang) {
+      // Let's define our first command. First the text we expect, and then the function it should call
+      var commands = {};
+      Object.keys(CMD).forEach(function(cmd){
+        var color = CMD[cmd]
+        commands[cmd] = function() {
+	  log('got cmd: '+cmd);
+          document.getElementById('colorbox').style.backgroundColor = color;
+        }
+      });
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening. You can call this here, or attach this call to an event, button, etc.
+//      annyang.start({paused:true, continuous:true});
+      annyang.debug(true);
+    }
+    window.onload = function() {
+      log('press start to begin');
+      document.getElementById('hintbox').innerHTML = 'supported commands:<br>'+ Object.keys(CMD).join('<br>');
+    }
+    </script>
+  </head>
+  <body style="background-color:black;color:white;">
+    <h2 class='center_text'>62337 Creative Crafters' LegoPet</h2>
+    <div style='float:right; margin:auto; padding:5px'>
+      <button class='btn' style='width:80px;font-size:12px' onclick='fullscreen()'>Fullscreen</button>
+    </div>
+    <div style='width:300px; margin:auto; padding:5px'>
+      <span id='status'>Stopped</span>
+      <button class='btn' onclick='start()'>Start</button>
+      <button class='btn' onclick='stop()' >Stop </button>
+    </div>
+    <div id='hintbox'  style='border:1px solid white; width:240px; height:230px; margin:10px; font-size:12px; padding:5px'></div>
+    <div id='colorbox' style='border:1px solid white; width:240px; height:120px; margin:10px; float:left; padding:5px'></div>
+    <textarea id='msg' class='center' style='width:245px;height:220px;background-color:black;color:white;font-size:12px; margin:10px; float:left'></textarea>
+  </body>
+</html>

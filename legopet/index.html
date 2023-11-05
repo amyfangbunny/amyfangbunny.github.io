@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>LegoPet</title>
     <style>
-	* {font-size:100%; font-family:Arial,Helvetica,sans-serif;}
+	* {font-size:12px; font-family:Arial,Helvetica,sans-serif;}
         .center {margin:auto; display:block;}
         .center_text {text-align:center;}
-        .btn {width:60px; height:40px; background-color:gray; color:white}
+        .btn {width:40px; height:30px; background-color:#404040; color:#A0A0A0;}
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
     <script>
@@ -55,11 +55,26 @@
     };
 
     var CMD = {
-      'hello':                  '#AE3C23',
-      'bye-bye':                '#AABBCC',
-      'come here':              '#0a25f5',
-      'show me your trick':     '#0af51a',
-      "what's your name":       '#f5e50a',
+      "here's your food":       '#FF0000', // red
+      "come and eat":           '#FF0000', // red
+      'bad pet':                '#0066FF', // blue
+      'bad boy':                '#0066FF', // blue
+      'turn around':            '#00FF00', // green
+      'tell me a joke':         '#FFCC00', // yellow
+      "what's your name":       '#FF00FF', // pink
+      "sing a song to me":      '#FFFFCC', // white
+      "sing another song":      '#99FFFF', // light blue
+    }
+
+    var colorTimer;
+
+    function setColor(color) {
+      document.getElementById('colorbox').style.backgroundColor = color;
+      if (colorTimer) clearTimeout(colorTimer);
+      colorTimer = setTimeout(function(){
+        document.getElementById('colorbox').style.backgroundColor = 'black';
+        colorTimer = null;
+      }, 3000);
     }
 
 
@@ -70,7 +85,7 @@
         var color = CMD[cmd]
         commands[cmd] = function() {
 	  log('got cmd: '+cmd);
-          document.getElementById('colorbox').style.backgroundColor = color;
+          setColor(color);
         }
       });
 
@@ -83,12 +98,27 @@
     }
     window.onload = function() {
       log('press start to begin');
-      document.getElementById('hintbox').innerHTML = 'supported commands:<br>'+ Object.keys(CMD).join('<br>');
+      var html = "<div style='padding:10px;padding-bottom:0px;font-size:15px'>Say or press one of the commands:</div><br>";
+      for (var it in CMD) {
+        color = CMD[it];
+        html += "<div id='color:"+color+"' style='padding:10px;display:inline-block;width:120px;height:20px;font-size:15px;text-wrap:nowrap'>";
+        html += "<span style='color:"+color+"'>&#9724;</span>&nbsp;&nbsp;"+it;
+        html += '</div>';
+      }
+      document.getElementById('hintbox').innerHTML = html;
+      document.getElementById('hintbox').addEventListener("click", function(e){
+        var color = e.target.id;
+        if (!/^color:/.test(color)) return;
+        color = color.replace(/^color:/,'');
+        console.log(color);
+        setColor(color);
+        log('manual set color '+color);
+      });
     }
     </script>
   </head>
-  <body style="background-color:black;color:white;">
-    <h2 class='center_text'>62337 Creative Crafters' LegoPet</h2>
+  <body style="background-color:black;color:gray;">
+    <img src="logo.png" alt="62337 Creative Crafters' LegoPet" width="330px" style="padding-top:5px;padding-bottom-5px">
     <div style='float:right; margin:auto; padding:5px'>
       <button class='btn' style='width:80px;font-size:12px' onclick='fullscreen()'>Fullscreen</button>
     </div>
@@ -97,8 +127,8 @@
       <button class='btn' onclick='start()'>Start</button>
       <button class='btn' onclick='stop()' >Stop </button>
     </div>
-    <div id='hintbox'  style='border:1px solid white; width:240px; height:230px; margin:10px; font-size:12px; padding:5px'></div>
-    <div id='colorbox' style='border:1px solid white; width:240px; height:120px; margin:10px; float:left; padding:5px'></div>
-    <textarea id='msg' class='center' style='width:245px;height:220px;background-color:black;color:white;font-size:12px; margin:10px; float:left'></textarea>
+    <div id='hintbox'  style='border:1px solid gray; width:300px; height:245px; margin:10px; font-size:12px; padding:5px'></div>
+    <div id='colorbox' style='border:1px solid gray; width:240px; height:120px; margin:10px; float:left; padding:5px'></div>
+    <textarea id='msg' class='center' style='width:245px;height:220px;background-color:black;color:gray;font-size:12px; margin:10px; float:left'></textarea>
   </body>
 </html>

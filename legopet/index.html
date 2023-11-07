@@ -13,9 +13,9 @@
     </style>
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
     <script>
-    function start() {if (annyang) annyang.resume();requestWakeLock();log('started');document.getElementById('status').innerHTML='Running &#x1F534;';fullscreen('on')}
-    function pause() {if (annyang) annyang.pause(); releaseWakeLock();log('paused'); document.getElementById('status').innerHTML='Paused'}
-    function stop()  {if (annyang) annyang.abort(); releaseWakeLock();log('stopped');document.getElementById('status').innerHTML='Stopped'}
+    function start() {if (annyang) annyang.resume();log('started');document.getElementById('status').innerHTML='Running &#x1F534;';fullscreen('on')}
+    function pause() {if (annyang) annyang.pause(); log('paused'); document.getElementById('status').innerHTML='Paused'}
+    function stop()  {if (annyang) annyang.abort(); log('stopped');document.getElementById('status').innerHTML='Stopped'}
     function log(msg) {
       var textarea = document.getElementById('msg');
       textarea.value += msg+'\n';
@@ -23,11 +23,14 @@
     }
     function fullscreen(action) {
       if (document.fullscreenElement) {
-        if (action!='on')
+        if (action!='on') {
           document.exitFullscreen();
+          releaseWakeLock();
+        }
       }
       else if (action!='off') {
         document.body.requestFullscreen();
+        requestWakeLock();
       }
     }
     let wakeLock = null;
@@ -58,7 +61,7 @@
       "here's your food":       '#FF0000', // red
       "come and eat":           '#FF0000', // red
       'bad pet':                '#0066FF', // blue
-      'bad boy':                '#0066FF', // blue
+      'scream':                 '#0066FF', // blue
       'turn around':            '#00FF00', // green
       'tell me a joke':         '#FFCC00', // yellow
       "what's your name":       '#FF00FF', // pink
